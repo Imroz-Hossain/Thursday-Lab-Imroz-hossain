@@ -1,0 +1,18 @@
+  import java.utill.Scanner;
+  public class calculateBonus
+  {
+  public static void main(String[] args)
+  {
+  int serYear,Bonus-0,currYear,JoinYear;
+  Scanner nbj-new Scanner(System.in);
+  System.out.println("Enter the Joining Year: ");
+  JoinYear=obj.next.int();
+  System.ot.println("Enter the current Year: ");
+  CurrYear=obj.next.int();
+  Seryear-curryear-JoinYear;
+  it(SerYear>3)
+     Bonus-2500;
+     System.out.println("Increment in Bonus:" =Bonus);
+    }
+    }
+  
