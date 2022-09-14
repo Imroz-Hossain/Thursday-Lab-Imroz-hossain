@@ -1,0 +1,188 @@
+package com.ems.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class Address {
+private String city;
+private String country;
+}
+[6:34 PM, 9/12/2022] soumo bank da Offc: address
+[6:34 PM, 9/12/2022] soumo bank da Offc: package com.ems.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+//lombok is used to reduce boilerplate code and save time for model/data objects use to data annotation
+//it can generate getters and setters method
+//@Getter
+//@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class Employee {
+private long empId;
+private String empName;
+private double empSal; // monthly take home
+// entity reference(aggregation)
+Address address; // Has-A relationship
+
+}
+
+package com.ems.exception;
+
+public class GlobalException extends Exception{
+	public GlobalException( String message)
+	{
+		super();
+	}
+}
+ package com.ems.service;
+import java.util.ArrayList;
+
+import com.ems.entity.Address;
+import com.ems.entity.Employee;
+import com.ems.exception.GlobalException;
+
+public class EmployeeService {
+ private static ArrayList<Employee> employee=new ArrayList<Employee>();
+	 // method to add employee details in array list
+ public void addEmployee(long empId,String name,double sal,String city,String country)
+ {
+	 Address add=new Address(city,country);
+	 employee.add(new Employee(empId,name,sal,add));
+ }
+ // for testing using builder annotation
+ public void addEmp(Employee emp)
+ {
+	 employee.add(emp);
+ }
+ // method to display all employee details
+ public void displayAllEmployee()
+ {
+	 for(Employee emp:employee)
+	 {
+		 System.out.println("Employee Id : "+emp.getEmpId());…
+[
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+
+import com.ems.entity.Address;
+import com.ems.entity.Employee;
+import com.ems.exception.GlobalException;
+
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.*;
+@TestMethodOrder(value = OrderAnnotation.class)
+class EmployeeServiceTest {
+
+	EmployeeService employeeService;
+	static ArrayList<Employee> emplist;
+	@BeforeAll
+	static void init()
+	{
+		emplist=new ArrayList<Employee>();
+	}
+	@BeforeEach
+	void setUp() throws Exception {
+		employeeService =new EmployeeService();
+	}
+
+	@AfterEach
+	void tearDown() throws Exception {
+		employeeService =null;
+		System.out.println("object is garbage collected");
+	}
+
+	@Test
+	@DisplayName("testing add Employee method")
+	@Order (1)
+	public void testAddEmployee() {
+		// way 1 
+		//employeeService.addEmployee(101, "Imroz", 25000, "HOOGHLY", "INDIA");
+	   //employeeService.addEmployee(101, "Soumo", 20000, "HARIT", "INDIA");
+		//assertEquals(2,employeeService.lengthOfList());
+		// way 2 using builder
+		Address add=Address.builder().city("HOOGHLY").country("INDIA").build();
+		Employee emp=Employee.builder().empId(101).empName("Imroz").empSal(25000).
+				address(add).build();
+		employeeService.addEmp(emp);
+		int length=employeeService.lengthOfList();
+		assertThat(length>0).isTrue();
+	}
+	@Test
+	@DisplayName("testing Display Employee By Id")
+	@Order(2)
+public void testDisplayEmpById() throws GlobalException
+{
+	Address add=Address.builder().city("HOOGHLY").country("INDIA").build();
+	Employee emp=Employee.builder().empId(101).empName("SOUMYA").empSal(25000).
+			address(add).build();
+	employeeService.addEmp(emp);
+	Employee e= employeeService.displayEmpById(101);
+	// assertEquals("Soumo",e.getEmpName());
+	assertThat(e.getEmpSal()).isEqualTo(25000.00);
+}
+	@Test
+	@DisplayName("test case for calculate appraisal")
+	@Order(3)
+	public void testCalculateAppraisalById()
+	{
+		employeeService.addEmployee(101,"Imroz", 25000,"HOOGHLY", "INDIA");
+		double appraisal=employeeService.calculateAppraisalById(101);
+		// assertEquals(2000,appraisal);
+		assertThat(appraisal).isEqualTo(2000);
+	}
+	@Test
+	@DisplayName("test case for calculate yearly salary")
+	@Order(4)
+	public void testCalculateYearlySalary()
+	{
+		employeeService.addEmployee(101,"Imroz", 25000,"HOOGHLY", "INDIA");
+		double yearlysalary=employeeService.calculateYearlySalary(101);
+		// assertEquals(300000,yearlysalary);
+		assertThat(yearlysalary).isEqualTo(300000);
+	}
+	@Test
+	@DisplayName("test case for update employees")
+	@Order(5)
+	public void testUpdateEmp() throws GlobalException
+	{
+		employeeService.addEmployee(101,"Imroz", 25000,"HOOGHLY", "INDIA");
+		Employee emp=employeeService.findId(101);
+		emp.setEmpName("Imr");
+		Employee updateEmp=employeeService.updateEmployee(0,emp);
+		//assertEquals("SOU",updateEmp.getEmpName());
+		assertThat(updateEmp.getEmpName()).isEqualTo("Imr");
+	}
+	@Test
+	@DisplayName("test case for delete employees")
+	@Order(6)
+	public void testDeleteAllEmployee()
+	{
+		// String msg=employeeService.deleteAllEmployee();
+		assertEquals("All employees deleted Successfully",employeeService.deleteAllEmployee());
+	}
+	
+}
