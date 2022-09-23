@@ -1,66 +1,9 @@
-Ques: create abstract class vaccine.create 2 concrete method firstDose() and 2ndDose().
-Scenario 1:user can take first dose if user is Indian and age is 18.after vaccination user has to pay 250rs. 
-Scenario 2: user can take 2nd dose if already the first dose has completed.
-Scenario 3: create abstract method boosterDose() in abstract class Vaccine.create one implementation class vaccinationSuccessful where implement boosterDose() method.
-Create main class vaccination and invoke all methods accord
- 
-  package oopsdemo;
-  import java.util.Scanner;
-  abstract class vaccine {
-	abstract public void boosterDose(char com1);
-	public void firstDose(int age,String country) {
-		if(age==18&&country.equals("India"))
-		{
-			System.out.println("You are eligable for vaccination\nYou Have to pay Rs.250");
-			
-		}
-		else {
-			System.out.println("You are not eligable for vaccination");
-			System.exit(0);
-		}
-	}
-	public void secondDose(char com) {
-		if(com=='Y'||com=='y') {
-			System.out.println("Now you are eligable for 2nd Dose");
-		}
-		else {
-			System.out.println("Now you are not eligable for 2nd Dose");
-			System.exit(0);
-		}
-	}
-}
-	class VaccinationSuccessful extends vaccine{
+create database UMS;
+Query OK, 1 row affected (0.42 sec)
 
-		@Override
-		public void boosterDose(char com1) {
-			
-			if(com1=='Y'||com1=='y') {
-				System.out.println("you are eligable to take Booster Dose");
-				System.out.println("Vaccination is pending");
-			}
-		}
-		public class Vaccination{
-			public static void main(String[] args) {
-				Scanner sc=new Scanner(System.in);
-				vaccine vc=new VaccinationSuccessful();
-				System.out.println("Welcome to Cowin: ");
-				System.out.println("Enter your age: ");
-				int age=sc.nextInt();
-				System.out.println("Enter your country: ");
-				String country=sc.next();
-				vc.firstDose(age,country);
-				System.out.println("is your 1st dose is complete:(Y/N)?");
-				char com=sc.next().charAt(0);
-				vc.secondDose(com);
-				System.out.println("is your 2nd done is complete:(Y/N)?");
-				char com1=sc.next().charAt(0);
-				vc.boosterDose(com1);
-			}
-		}
-			}
-		
-	
-	
-	
+mysql> use UMS;
+Database changed
+mysql> create table student_information(registration_numbe int primary key,name varchar(50) not null,branch varchar(30) not null,contact_number int not null,DOB varchar(12) not null,date_of_joining varchar(12) not null,Address varchar(50) not null,Email_id varchar(50) not null);
+Query OK, 0 rows affected (0.26 sec)
 
-
+mysql> select * from  student_information;
